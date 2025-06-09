@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/your-org/my-gitops-repo.git
+    repoURL: https://github.com/sangisaikumar123/my-gitops-repo.git
     targetRevision: HEAD
     path: apps/my-app
     kustomize: {}
