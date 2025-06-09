@@ -1,0 +1,44 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    paths:
+      - 'src/**'             # triggers on app code changes
+      - '.github/workflows/**'
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/my-app
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set dynamic image tag
+        id: tag
+        run: echo "TAG=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t $IMAGE_NAME:$TAG ./src
+          docker push $IMAGE_NAME:$TAG
+
+      - name: Update deployment.yaml with new image
+        run: |
+          sed -i "s|image: .*|image: $IMAGE_NAME:$TAG|g" apps/my-app/deployment.yaml
+
+      - name: Commit and push updated manifest
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "ci@github.com"
+          git add apps/my-app/deployment.yaml
+          git commit -m "Update image to $TAG"
+          git push
