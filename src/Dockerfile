@@ -6,7 +6,6 @@ FROM nginx:alpine
 COPY ./html /usr/share/nginx/html
 
 # Expose port 80
-EXPOSE 80
-
+EXPOSE 1111
 # Default NGINX command will run automatically (no need to override)
 
