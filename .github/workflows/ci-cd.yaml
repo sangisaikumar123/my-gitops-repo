@@ -24,7 +24,7 @@ jobs:
         run: echo "TAG=$(date +%s)" >> $GITHUB_ENV
 
       - name: Log in to Docker Hub
-        run: echo "saikumar7824" | docker login -u "Sai@78245" --password-stdin
+        run: echo "${{ secrets.DOCKER_USERNAME }}" | docker login -u "${{ secrets.DOCKER_PASSWORD }}" --password-stdin
 
       - name: Build and push Docker image
         run: |
