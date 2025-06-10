@@ -43,3 +43,4 @@ jobs:
           git add apps/my-app/deployment.yaml
           git commit -m "Update image to $TAG" || echo "No changes to commit"
           git push https://x-access-token:${GH_PAT}@github.com/sangisaikumar123/my-gitops-repo.git HEAD:main
+
