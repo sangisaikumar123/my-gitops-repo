@@ -9,4 +9,4 @@ spec:
     - protocol: TCP
       port: 1111
       targetPort: 1111
-  type: ClusterIP
+  type: NodePort
