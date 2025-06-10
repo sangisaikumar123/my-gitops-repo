@@ -37,8 +37,14 @@ jobs:
 
       - name: Commit and push updated manifest
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "ci@github.com"
-          git add apps/my-app/deployment.yaml
-          git commit -m "Update image to $TAG"
-          git push
+            git config user.name "GitHub Actions"
+            git config user.email "actions@github.com"
+
+      - name: Commit and push changes
+         env:
+         GH_PAT: ${{ secrets.GH_PAT }}
+      run: |
+    git add .
+    git commit -m "Update image to ${{ steps.timestamp.outputs.timestamp }}" || echo "No changes to commit"
+    git push https://x-access-token:${GH_PAT}@github.com/sangisaikumar123/my-gitops-repo.git HEAD:main
+
